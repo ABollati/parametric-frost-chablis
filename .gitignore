@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store
+data/raw/
+
+# Documents de travail et anciennes versions (non publiés)
+Old/
+notebooks/_archive/
+plan_projet_gel_parametrique_*.pdf
+
+# Documents de tiers : cités, pas republiés
+Article_debourrement.pdf
+*.numbers

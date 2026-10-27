@@ -1,0 +1,11 @@
+# Dépendances directes du projet (Python 3)
+# Calcul et graphiques
+numpy==2.5.3
+pandas==3.0.6
+scipy==1.18.1
+matplotlib==3.11.2
+# Exécution des notebooks (VS Code ou Jupyter)
+ipykernel==7.4.0
+# Lecture des fichiers des douanes (scripts/extraire_douanes.py) : .xls et .xlsx
+xlrd>=2.0
+openpyxl>=3.1
