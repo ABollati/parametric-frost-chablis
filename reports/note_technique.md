@@ -16,17 +16,19 @@ Une coopérative du Chablisien demande une couverture contre le gel de printemps
 
 | | |
 |---|---|
-| Limite $\ell$ | 2 M€ par an |
+| Limite $`\ell`$ | 2 M€ par an |
 | Budget | 200 k€ de **prime commerciale** (prix payé par le client) |
-| Paiement | Linéaire entre un seuil de déclenchement $z_1$ et un seuil de sortie $z_2$ |
+| Paiement | Linéaire entre un seuil de déclenchement $`z_1`$ et un seuil de sortie $`z_2`$ |
 | Objectif | Couvrir les gels sévères, en particulier un gel de type 2021 |
 
-**Indice.** $Z_t = \min_j TN_{t,j}$, où $TN$ est la température minimale quotidienne sous abri à la station de Chablis (89068001), pour $j$ du 1er avril au 15 mai.
+**Indice.** $`Z_t = \min_j TN_{t,j}`$, où $`TN`$ est la température minimale quotidienne sous abri à la station de Chablis (89068001), pour $`j`$ du 1er avril au 15 mai.
 
 L'indice a été fixé avant toute tarification, pour ne pas le choisir en fonction du prix obtenu. La fenêtre encadre le débourrement du Chardonnay, estimé en médiane au 13 avril par un modèle de degrés-jours en base 5 °C (GDD5 ; García de Cortázar-Atauri et al., 2009). L'indice reste simple et vérifiable par le client.
 
 **Paiement.**
-$$I = \ell \cdot \min\left(1, \frac{(z_1 - Z)^+}{z_1 - z_2}\right)$$
+```math
+I = \ell \cdot \min\left(1, \frac{(z_1 - Z)^+}{z_1 - z_2}\right)
+```
 
 ## 2. Données
 
@@ -42,48 +44,52 @@ $$I = \ell \cdot \min\left(1, \frac{(z_1 - Z)^+}{z_1 - z_2}\right)$$
 
 La prime pure est l'espérance du paiement. Pour un paiement linéaire, elle s'écrit :
 
-$$\pi_{\text{pure}} = \mathbb{E}[I] = \frac{\ell}{z_1 - z_2}\int_{z_2}^{z_1} F(z)\,dz$$
+```math
+\pi_{\text{pure}} = \mathbb{E}[I] = \frac{\ell}{z_1 - z_2}\int_{z_2}^{z_1} F(z)\,dz
+```
 
-où $F$ est la fonction de répartition de $Z$. Avec la loi empirique, cette intégrale est égale à la moyenne des paiements rejoués sur les 64 années (*burning cost*). Les deux calculs sont vérifiés égaux dans le code.
+où $`F`$ est la fonction de répartition de $`Z`$. Avec la loi empirique, cette intégrale est égale à la moyenne des paiements rejoués sur les 64 années (*burning cost*). Les deux calculs sont vérifiés égaux dans le code.
 
 Le budget porte sur la prime commerciale :
 
-$$P_{\text{comm}} = \frac{\mathbb{E}[I] + \alpha\,\sigma(I)}{1 - f}$$
+```math
+P_{\text{comm}} = \frac{\mathbb{E}[I] + \alpha\,\sigma(I)}{1 - f}
+```
 
 - Le chargement de sécurité suit le principe de l'écart-type (Kaas et al., chap. 5).
-- $f$ représente les frais et le courtage, en part de la prime commerciale.
-- Aucune valeur de marché de $\alpha$ ou de $f$ n'ayant pu être sourcée, on teste une grille d'hypothèses : $\alpha \in \{0{,}1 ; 0{,}2 ; 0{,}3\}$, $f \in \{10 ; 20 ; 30\,\%\}$.
+- $`f`$ représente les frais et le courtage, en part de la prime commerciale.
+- Aucune valeur de marché de $`\alpha`$ ou de $`f`$ n'ayant pu être sourcée, on teste une grille d'hypothèses : $`\alpha \in \{0{,}1 ; 0{,}2 ; 0{,}3\}`$, $`f \in \{10 ; 20 ; 30\,\%\}`$.
 
-**Choix de la structure.** Pour chaque couple $(\alpha, f)$, on balaye $z_1$ et $z_2$ au pas de 0,1 °C, sous trois contraintes :
-- $P_{\text{comm}} \le 200$ k€ ;
+**Choix de la structure.** Pour chaque couple $`(\alpha, f)`$, on balaye $`z_1`$ et $`z_2`$ au pas de 0,1 °C, sous trois contraintes :
+- $`P_{\text{comm}} \le 200`$ k€ ;
 - 2021 déclenche un paiement ;
-- $z_2 \ge -6{,}0$ °C, la valeur la plus froide observée.
+- $`z_2 \ge -6{,}0`$ °C, la valeur la plus froide observée.
 
 On retient la structure qui paie la plus grande part de la limite en 2021.
 
 ### 3.2 Résultats
 
-Une seule hypothèse sur 9 est faisable : $\alpha = 0{,}1$, $f = 10\,\%$, la plus basse de la grille. Pour les autres, la prime commerciale minimale atteignable, parmi les structures qui paient 2021, dépasse le budget : de 206 k€ ($\alpha = 0{,}1$, $f = 20\,\%$) à 356 k€ ($\alpha = 0{,}3$, $f = 30\,\%$).
+Une seule hypothèse sur 9 est faisable : $`\alpha = 0{,}1`$, $`f = 10\,\%`$, la plus basse de la grille. Pour les autres, la prime commerciale minimale atteignable, parmi les structures qui paient 2021, dépasse le budget : de 206 k€ ($`\alpha = 0{,}1`$, $`f = 20\,\%`$) à 356 k€ ($`\alpha = 0{,}3`$, $`f = 30\,\%`$).
 
-La cause est la forme du risque : le paiement est rare et massif, et son écart-type vaut environ 3 fois sa moyenne. Même un petit $\alpha$ pèse donc lourd.
+La cause est la forme du risque : le paiement est rare et massif, et son écart-type vaut environ 3 fois sa moyenne. Même un petit $`\alpha`$ pèse donc lourd.
 
-**Structure retenue : $z_1 = -4{,}7$ °C, $z_2 = -6{,}0$ °C.**
+**Structure retenue : $`z_1 = -4{,}7`$ °C, $`z_2 = -6{,}0`$ °C.**
 
 | | |
 |---|---|
 | Fréquence de paiement | 8 années sur 64 (12,5 %) |
-| Paiement pour un gel de type 2021 ($Z = -4{,}9$ °C) | 308 k€, soit 15 % de la limite |
-| Années payées à la limite | 1973 et 1996 ($Z = -6{,}0$ °C) ; 2022 payée à 1,85 M€ |
+| Paiement pour un gel de type 2021 ($`Z = -4{,}9`$ °C) | 308 k€, soit 15 % de la limite |
+| Années payées à la limite | 1973 et 1996 ($`Z = -6{,}0`$ °C) ; 2022 payée à 1,85 M€ |
 
 ### 3.3 Contrôle par une loi des valeurs extrêmes (GEV)
 
-On ajuste une loi GEV sur $-Z$ par maximum de vraisemblance. Paramètre de forme : $\hat\xi = -0{,}25$. Une valeur négative implique une borne basse, estimée à −8,0 °C.
+On ajuste une loi GEV sur $`-Z`$ par maximum de vraisemblance. Paramètre de forme : $`\hat\xi = -0{,}25`$. Une valeur négative implique une borne basse, estimée à −8,0 °C.
 
 L'adéquation n'est pas rejetée. Les p-valeurs sont obtenues par bootstrap paramétrique, avec réajustement de la loi à chaque tirage et 500 tirages :
-- Kolmogorov-Smirnov : $p = 0{,}66$ ;
-- Anderson-Darling : $p = 0{,}41$.
+- Kolmogorov-Smirnov : $`p = 0{,}66`$ ;
+- Anderson-Darling : $`p = 0{,}41`$.
 
-Avec 64 points, ces tests ont toutefois peu de puissance. Dans la zone utile, la GEV donne une probabilité plus faible que la loi empirique : $P(Z \le -4{,}9)$ vaut 0,091 contre 0,125.
+Avec 64 points, ces tests ont toutefois peu de puissance. Dans la zone utile, la GEV donne une probabilité plus faible que la loi empirique : $`P(Z \le -4{,}9)`$ vaut 0,091 contre 0,125.
 
 ### 3.4 Incertitude sur la prime
 
@@ -108,10 +114,10 @@ On compare, sur les 14 années, les paiements de la structure retenue aux pertes
 | **Pas de perte** | 2 (2012, 2022) | 8 |
 
 Les deux probabilités d'erreur, avec des intervalles exacts de Clopper-Pearson à 95 % (Clopper et Pearson, 1934) :
-- $q = P(\text{pas de paiement} \mid \text{perte}) = 3/4$, intervalle [19 % ; 99 %] ;
-- $r = P(\text{pas de perte} \mid \text{paiement}) = 2/3$, intervalle [9 % ; 99 %].
+- $`q = P(\text{pas de paiement} \mid \text{perte}) = 3/4`$, intervalle [19 % ; 99 %] ;
+- $`r = P(\text{pas de perte} \mid \text{paiement}) = 2/3`$, intervalle [9 % ; 99 %].
 
-Avec la moyenne olympique, on obtient $q = 2/3$ et $r = 1/2$.
+Avec la moyenne olympique, on obtient $`q = 2/3`$ et $`r = 1/2`$.
 
 **Lecture.**
 - Les estimations sont mauvaises, mais elles reposent sur 4 pertes et 3 paiements. Les intervalles couvrent presque tout [0 ; 1] : on ne peut conclure ni que l'indice est mauvais, ni qu'il est bon.
@@ -136,9 +142,9 @@ Avec la moyenne olympique, on obtient $q = 2/3$ et $r = 1/2$.
 - **Stationnarité.** La tarification suppose que les 64 années suivent la même loi. C'est à tester par une GEV à paramètre de position dépendant du temps.
 - **Phénologie.** Un indice calculé après un débourrement estimé par degrés-jours, ou une fenêtre ouverte au 15 mars, pourrait mieux suivre la sensibilité de la vigne. Ce n'est pas calibrable de façon fiable sur 14 années de pertes.
 - **Représentativité de la station.** La station est en fond de vallée et compte parmi les plus froides du réseau les années de gel. Elle surestime probablement le froid subi sur les coteaux, ce qui augmente les paiements sans perte.
-- **Chargements.** $\alpha$ et $f$ sont des hypothèses. Une approche par le coût du capital donnerait un chargement fondé sur le capital immobilisé.
+- **Chargements.** $`\alpha`$ et $`f`$ sont des hypothèses. Une approche par le coût du capital donnerait un chargement fondé sur le capital immobilisé.
 - **Accumulation.** Pour un portefeuille de plusieurs vignobles, il faudrait étudier la corrélation des déclenchements entre stations.
-- **Approche bayésienne.** Une loi a priori sur $\xi$, tirée de la littérature sur les extrêmes de température, intégrerait l'incertitude d'estimation dans la prime.
+- **Approche bayésienne.** Une loi a priori sur $`\xi`$, tirée de la littérature sur les extrêmes de température, intégrerait l'incertitude d'estimation dans la prime.
 
 ## Références
 

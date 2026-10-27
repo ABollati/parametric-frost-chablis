@@ -28,7 +28,7 @@ Référence : CHB-GEL-2027 · Date d'émission : 26 octobre 2026 · Offre valabl
 |---|---|
 | **Variable** | Température minimale quotidienne sous abri, champ **TN** des données quotidiennes publiées par Météo-France, selon la définition de Météo-France |
 | **Station de référence** | CHABLIS (Météo-France n° 89068001), Yonne |
-| **Indice** | $Z$ = valeur la plus basse de TN relevée à la station de référence sur la période de risque |
+| **Indice** | $`Z`$ = valeur la plus basse de TN relevée à la station de référence sur la période de risque |
 | **Précision** | Valeurs exprimées au dixième de degré Celsius, telles que publiées ; aucun arrondi supplémentaire |
 | **Données retenues** | Valeurs disponibles à la **date de figement**, à fixer d'après le délai de validation des données quotidiennes par Météo-France. Toute révision ultérieure est sans effet sur le règlement |
 
@@ -45,16 +45,16 @@ Référence : CHB-GEL-2027 · Date d'émission : 26 octobre 2026 · Offre valabl
 
 | | |
 |---|---|
-| **Seuil de déclenchement** $z_1$ | **−4,7 °C** |
-| **Seuil de sortie** $z_2$ | **−6,0 °C** |
-| **Limite** $\ell$ | **2 000 000 €** par année de couverture |
-| **Indemnité** | $I = \ell \times \min\left(1,\ \max\left(0,\ \dfrac{z_1 - Z}{z_1 - z_2}\right)\right)$ |
+| **Seuil de déclenchement** $`z_1`$ | **−4,7 °C** |
+| **Seuil de sortie** $`z_2`$ | **−6,0 °C** |
+| **Limite** $`\ell`$ | **2 000 000 €** par année de couverture |
+| **Indemnité** | $`I = \ell \times \min\left(1,\ \max\left(0,\ \dfrac{z_1 - Z}{z_1 - z_2}\right)\right)`$ |
 
-Lecture : rien n'est payé si $Z \ge -4{,}7$ °C ; le paiement croît linéairement de 0 à la limite entre −4,7 et −6,0 °C, soit **153 846 € par dixième de degré** ; la limite est versée intégralement si $Z \le -6{,}0$ °C.
+Lecture : rien n'est payé si $`Z \ge -4{,}7`$ °C ; le paiement croît linéairement de 0 à la limite entre −4,7 et −6,0 °C, soit **153 846 € par dixième de degré** ; la limite est versée intégralement si $`Z \le -6{,}0`$ °C.
 
 **Exemples**
 
-| Indice $Z$ | Indemnité |
+| Indice $`Z`$ | Indemnité |
 |---|---|
 | −4,5 °C | 0 € |
 | −4,9 °C (niveau observé en 2021) | 307 692 € |

@@ -31,40 +31,46 @@ A wine cooperative in Chablis asks for a frost cover with:
 
 - **Data.** Météo-France daily data, Chablis station (no. 89068001), 1963–2026.
 - **Variable.** Daily minimum temperature under shelter (**TN**). It is the only temperature variable with a complete record over 64 years, all values carry quality code 1, and it is the standard measure of frost occurrence. TN50 was never measured at Chablis, and TNSOL only from 1993 to 2008.
-- **Index.** $Z$ = lowest TN between **1 April and 15 May** of each year.
+- **Index.** $`Z`$ = lowest TN between **1 April and 15 May** of each year.
   - The window covers Chardonnay budburst, after which buds are frost-sensitive. Median budburst is estimated around 13 April with a growing-degree-days model (García de Cortázar-Atauri et al., 2009).
   - It ends just after the Ice Saints (11–13 May), traditionally regarded in France as the end of spring-frost risk.
 - **Order of choices.** The index was fixed before any pricing, to avoid choosing it for the price it gives.
 
 ### 2. Pricing (`02_tarification.ipynb`)
 
-**Linear payout** between a trigger $z_1$ and an exit $z_2$:
+**Linear payout** between a trigger $`z_1`$ and an exit $`z_2`$:
 
-$$I = \ell \cdot \min\left(1, \frac{(z_1 - Z)^+}{z_1 - z_2}\right)$$
+```math
+I = \ell \cdot \min\left(1, \frac{(z_1 - Z)^+}{z_1 - z_2}\right)
+```
 
 **Pure premium.**
 
-$$\pi = \mathbb{E}[I] = \frac{\ell}{z_1 - z_2}\int_{z_2}^{z_1} F(z)\,dz$$
+```math
+\pi = \mathbb{E}[I] = \frac{\ell}{z_1 - z_2}\int_{z_2}^{z_1} F(z)\,dz
+```
 
-$F$ is the distribution function of $Z$. It is estimated first empirically (burning cost: the average of the payouts replayed over the 64 years), then with a GEV distribution fitted by maximum likelihood.
+$`F`$ is the distribution function of $`Z`$. It is estimated first empirically (burning cost: the average of the payouts replayed over the 64 years), then with a GEV distribution fitted by maximum likelihood.
 
 **Technical and commercial premiums.**
 
-$$P_{\text{comm}} = \frac{\mathbb{E}[I] + \alpha\,\sigma(I)}{1 - f}$$
+```math
+P_{\text{comm}} = \frac{\mathbb{E}[I] + \alpha\,\sigma(I)}{1 - f}
+```
 
-The safety loading follows the standard-deviation principle, with coefficient $\alpha$. The rate $f$ covers expenses and brokerage, as a share of the commercial premium. Since no market value could be sourced, both are tested on a grid: $\alpha \in \{0.1, 0.2, 0.3\}$ and $f \in \{10\%, 20\%, 30\%\}$.
+The safety loading follows the standard-deviation principle, with coefficient $`\alpha`$. The rate $`f`$ covers expenses and brokerage, as a share of the commercial premium. Since no market value could be sourced, both are tested on a grid: $`\alpha \in \{0.1, 0.2, 0.3\}`$ and $`f \in \{10\%, 20\%, 30\%\}`$.
 
-**Structure search.** For each assumption, $(z_1, z_2)$ is scanned in 0.1 °C steps under three constraints:
+**Structure search.** For each assumption, $`(z_1, z_2)`$ is scanned in 0.1 °C steps under three constraints:
 
 - commercial premium ≤ €200k;
 - 2021 triggers a payout;
-- $z_2 \ge -6.0$ °C, the coldest observed value.
+- $`z_2 \ge -6.0`$ °C, the coldest observed value.
 
 The structure retained is the one that pays the largest share of the limit in 2021.
 
 **Model checks.**
 
-- QQ-plot, plus a close look at the distribution function over $[z_2, z_1]$.
+- QQ-plot, plus a close look at the distribution function over $`[z_2, z_1]`$.
 - Kolmogorov–Smirnov and Anderson–Darling tests, with p-values from a parametric bootstrap that refits the GEV on each replication: p = 0.66 and p = 0.41.
 
 **Uncertainty.** Percentile bootstrap on both premiums:
@@ -77,8 +83,8 @@ The structure retained is the one that pays the largest share of the limit in 20
 - **Yields.** Customs harvest declarations (DGDDI), AOC wines of the Yonne département, 2009–2025. They are used as a proxy for the cooperative, since Chablis appellations make up about 70% of the département's AOC vineyard area.
 - **Loss year.** Yield at least 20% below a reference built on previous years: the 3-year average (14 years available), or the 5-year Olympic average (12 years).
 - **Error probabilities.**
-  - $q$ = P(no payout | loss) = 3/4, 95% CI [19%; 99%];
-  - $r$ = P(no loss | payout) = 2/3, 95% CI [9%; 99%].
+  - $`q`$ = P(no payout | loss) = 3/4, 95% CI [19%; 99%];
+  - $`r`$ = P(no loss | payout) = 2/3, 95% CI [9%; 99%].
 
   Both use exact Clopper–Pearson intervals.
 - **Annex.** Neighbouring stations (up to 45 km) and ground-level measurements are checked. None of them flags the missed loss years, 2016 and 2024, so a poorly placed sensor is not the cause. A backup station for the contract is still to be designated, using criteria set out in the term sheet.
@@ -92,7 +98,7 @@ The structure retained is the one that pays the largest share of the limit in 20
 
 - **Stationarity.** Pricing assumes the 64 years follow the same distribution. This should be tested with a GEV whose location parameter depends on time.
 - **Phenology.** An index computed after an estimated budburst date, or a window opening on 15 March, may better track vine sensitivity.
-- **Loadings.** The values of $\alpha$ and $f$ are assumptions. A cost-of-capital loading would replace them.
+- **Loadings.** The values of $`\alpha`$ and $`f`$ are assumptions. A cost-of-capital loading would replace them.
 - **Bayesian pricing.** A prior on the GEV shape parameter would carry estimation uncertainty into the premium.
 - **Accumulation.** For a portfolio of vineyards, the correlation of triggers across stations would matter.
 
