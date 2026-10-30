@@ -4,6 +4,8 @@ Pricing and structuring a parametric (index-based) insurance contract against sp
 
 *Study project. The client is fictional; the data is real and public. The technical note and the term sheet are written in French.*
 
+*Code developed with AI assistance (Claude); modelling choices, interpretation and underwriting conclusions are my own.*
+
 ## The mandate
 
 A wine cooperative in Chablis asks for a frost cover with:
